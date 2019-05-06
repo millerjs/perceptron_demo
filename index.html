@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Perceptron</title>
+        <script src="https://d3js.org/d3.v3.min.js"></script>
+        <script src="perceptron.js"></script>
+        <style>
+        .line {
+            stroke: #E4002B;
+            fill: none;
+            stroke-width: 3;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-size: 10px;
+            font-family: sans-serif;
+        }
+
+        .text-label {
+            font-size: 10px;
+            font-family: sans-serif;
+        }
+
+        .dot {
+            stroke: #293b47;
+        }
+
+        .red {
+            fill: red;
+        }
+        .blue {
+            fill: blue;
+        }
+
+        </style>
+	</head>
+	<body onload="render();">
+      <button onclick="render()">Render</button>
+
+	</body>
+    <svg id="svg"></svg>
+</html>
