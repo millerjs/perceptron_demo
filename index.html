@@ -3,48 +3,105 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Perceptron</title>
-        <script src="https://d3js.org/d3.v3.min.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://unpkg.com/d3-3d/build/d3-3d.min.js"></script>
+
+        <script src="plot.js"></script>
+        <script src="data.js"></script>
+        <script src="demo.js"></script>
         <script src="perceptron.js"></script>
+        <script src="3dplot.js"></script>
+        <script src="jquery.knob.min.js"></script>
+
         <style>
-        .line {
-            stroke: #E4002B;
-            fill: none;
-            stroke-width: 3;
-        }
 
-        .axis path,
-        .axis line {
-            fill: none;
-            stroke: black;
-            shape-rendering: crispEdges;
-        }
+          .axis path, .axis line { fill: none; stroke: black; shape-rendering: crispEdges;}
+          .axis text             { font-size: 10px; font-family: sans-serif;}
+          .blue                  { fill: blue;}
+          .centered-image        { display: block; margin-left: auto; margin-right: auto; width: 80%;}
+          .circle                { height: 15px; width: 15px; border-radius: 50%; display: inline-block; border:1px solid black; }
+          .column                { float: left;  width: 30%; }
+          .darkmagenta           { fill: darkmagenta;}
+          .dashed                { stroke: black; stroke-dasharray: 4;}
+          .detail                { text-align: center; margin: 1em;}
+          .dot                   { stroke: #293b47;}
+          .label                 { display: block; text-align: center; line-height: 150%; font-size: .85em;}
+          .line                  { stroke: #E4002B; fill: none; stroke-width: 3;}
+          .magenta               { fill: magenta;}
+          .red                   { fill: red;}
+          .row:after             { content: ""; display: table; clear: both;}
+          .slidecontainer        { text-align: center }
+          .slider-box            { margin: auto; width: 200px; border: 2px solid gray; border-radius: 10px; margin-bottom: 10px;}
+          .solid                 { stroke: black;}
+          .text-label            { font-size: 10px; font-family: sans-serif;}
+          .thick                 { stroke: #E4002B; fill: none; stroke-width: 4;}
+          .white                 { fill: white;}
+          button                 { margin: auto; width: 100px; height: 60px; border-radius: 10px;}
+          img                    { margin: auto; }
+          path                   { transition-property: all; transition-property: transform;}
 
-        .axis text {
-            font-size: 10px;
-            font-family: sans-serif;
-        }
+          .row {
+          margin-top: 2%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          }
 
-        .text-label {
-            font-size: 10px;
-            font-family: sans-serif;
-        }
+          .pixel {width: 40px; height: 40px; margin-right: 10px;};
 
-        .dot {
-            stroke: #293b47;
-        }
 
-        .red {
-            fill: red;
-        }
-        .blue {
-            fill: blue;
-        }
+          .image {
+          margin-top: 2%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 20px;
+          }
 
+          #demoBox { margin-top: 40px;}
         </style>
 	</head>
-	<body onload="render();">
-      <button onclick="render()">Render</button>
+	<body onload="setup();">
+      <h2>Classification A</h2> <div id="imagesA" class="row"></div>
+      <h2>Classification B</h2> <div id="imagesB" class="row"></div>
+      <div id="demoBox">
+        <div class="circle" style="background-color: darkmagenta"></div> Incorrectly Inctivate
+        <div class="circle" style="background-color: magenta"></div> Incorrectly Activate
+        <div class="circle" style="background-color: blue"></div> Activate
+        <div class="circle" style="background-color: white"></div> Inctivate
 
+        <div class="row">
+          <div class="column">
+
+            <svg id="svg"></svg>
+
+            <div class="row">
+              <input id="knobX"    class="knob" data-width="150" data-fgColor="#222222" data-thickness=.3 value=".1" data-linecap=round data-min="-0.3" data-max=".3" data-step="0.01">
+              <input id="knobY"    class="knob" data-width="150" data-fgColor="#222222" data-thickness=.3 value=".1" data-linecap=round data-min="-0.3" data-max=".3" data-step="0.01">
+              <input id="knobBias" class="knob" data-width="150" data-fgColor="#222222" data-thickness=.3 value=".1" data-linecap=round data-min="-0.3" data-max=".3" data-step="0.01">
+            </div>
+          </div>
+
+          <div class="column">
+
+            <div id="xValue" class="detail">x1:</div>
+            <div id="yValue" class="detail">x2:</div>
+            <div class="detail">activation = bias + (x * w1) + (x2 * w2)</div>
+            <div id="evaluation" class="detail">activation: </div>
+            <div id="error" class="detail">error: </div>
+            <img src="2dperceptron.png" class="centered-image">
+
+            <div class="row">
+              <button onclick="step()">Step</button>
+              <button onclick="render3d();">Surface</button>
+            </div>
+
+          </div>
+          <div class="column">
+            <svg id="errorSurface" width="800px" height="500"></svg>
+          </div>
+        </div>
+      </div>
 	</body>
-    <svg id="svg"></svg>
 </html>
